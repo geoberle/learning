@@ -18,6 +18,6 @@ Use relative URLs for local assets and navigation, not paths starting with `/`. 
 
 GitHub Pages publishes from the `/docs` folder on `main`. `docs/.nojekyll` ensures HTML and assets are served without Jekyll processing.
 
-The repository is private, but the published website is public. Everything under `docs/` is published: keep credentials, private work material, and unpublished notes outside that directory. Pages for this private personal repository requires GitHub Pro or another eligible plan.
+Both the repository and the website are public. Everything under `docs/` is served on the website; all other committed files remain visible on GitHub. Keep credentials and private work material out of this repository.
 
 Check deployment status in the repository’s Actions tab and Settings → Pages.
