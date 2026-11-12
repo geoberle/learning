@@ -8,6 +8,13 @@ For defining missions, managing learning issues, integrating materials, recordin
 
 Use Matt Pocock’s `teach` skill for teaching, lessons, reference sheets, and learning records. Run it in the selected mission workspace, never the repository root. Use grilling to clarify a mission when its purpose or success criteria are unsettled.
 
+## Teaching quality
+
+- Build lessons progressively: explain prerequisites before relying on them, and connect each new concept to what the learner already knows or what the lesson has established.
+- Define unfamiliar terminology and acronyms at first use, before using them in explanations or diagrams. Use a concise definition box or a term popup accessible by keyboard and touch as well as hover.
+- Prioritize clarity: use plain language and concrete examples before technical shorthand. Keep straightforward foundations concise; increase practice and reinforcement as concepts become harder.
+- Before publishing, read the lesson from the learner’s starting point and check that every concept has its prerequisites and every unfamiliar term has a definition where first encountered.
+
 ## Model
 
 - Organize GitHub issues as topic → mission → learning task. Topic issues carry `topic`, can remain open indefinitely, and have no teach workspace or mission lifecycle label. Each mission belongs to one primary topic; link additional relevant topics.
