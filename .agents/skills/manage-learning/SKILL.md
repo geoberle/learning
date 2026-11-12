@@ -17,9 +17,9 @@ Use GitHub’s available connector or `gh` for issues and sub-issue relationship
 
 Keep broad areas of interest as issues labeled `topic`. They organize missions and may remain open indefinitely; give them neither mission lifecycle labels nor teach workspaces. Preserve topic issues when defining missions beneath them.
 
-Write topic titles as areas of interest, such as “Topic: LLM fundamentals”, rather than instructions to learn or deliver something. Their bodies describe scope, optional directions for future missions, and sources. Preserve useful exercises as inspiration, not commitments. Use native sub-issues to collect missions; topic bodies have no completion checklist, success criteria, or prescribed teach session. When reclassifying an issue as a topic, update its title and body as well as its labels.
+Write topic titles as areas of interest, such as “Topic: LLM behavior and interfaces”, rather than instructions to learn or deliver something. Keep their bodies focused on scope, boundaries with related topics, optional mission directions, and sources; keep shared workflow instructions in this skill. Use titles that match the actual scope. Preserve useful exercises as inspiration, not commitments. Use native sub-issues to collect missions; topic bodies have no completion checklist, success criteria, or prescribed teach session. When reclassifying an issue as a topic, update its title and body as well as its labels.
 
-Use the hierarchy topic → mission → learning task. Each mission is a sub-issue of its primary topic and may parent its own task sub-issues. If a mission spans topics, choose one primary parent and link the others. Topic membership does not prescribe a learning sequence.
+Use the hierarchy topic → mission → learning task. Each mission is a sub-issue of its primary topic and may parent its own task sub-issues. If a mission spans topics, choose its primary parent by its main learning objective and link the others. Allow useful overlap rather than treating topics as mutually exclusive categories. Topic membership does not prescribe a learning sequence.
 
 ## Define or evolve a mission
 
