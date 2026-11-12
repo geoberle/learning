@@ -15,11 +15,26 @@ Use GitHub’s available connector or `gh` for issues and sub-issue relationship
 
 ## Define or evolve a mission
 
-For a new mission, clarify the learner’s reason, observable success criteria, constraints, and scope using grilling. Read the installed `teach` skill and its mission format. Confirm the mission before creating its workspace and MISSION.md. Reuse an existing backlog issue as the parent when it represents that mission; otherwise create a parent issue.
+For a new mission, clarify the learner’s reason, observable success criteria, constraints, and scope using grilling. Define a concrete capability to acquire rather than an open-ended subject to study. Read the installed `teach` skill and its mission format. Confirm the mission before creating its workspace and MISSION.md. Reuse an existing backlog issue as the parent when it represents that mission; otherwise create a parent issue.
 
 Link the parent issue to MISSION.md, the workspace, and available published materials; link MISSION.md back to the parent. Keep the full mission definition in MISSION.md. Record mission changes with the learner’s confirmation and a learning record according to `teach`.
 
 Create sub-issues only for questions, exercises, or gaps needing their own tracking. Link related work across missions when useful; preserve one parent relationship per learning task.
+
+## Mission lifecycle
+
+Apply exactly one lifecycle label to each open mission parent or proposed mission issue:
+
+- `mission:proposed`: an idea whose purpose and success criteria still need definition; a workspace is not required yet.
+- `mission:ready`: the mission is agreed and its workspace is prepared, ready for learning.
+- `mission:active`: the learner is currently working toward the mission.
+- `mission:paused`: deliberately set aside; record context for resuming in the issue.
+
+Replace the previous lifecycle label when changing state, preserving unrelated labels. Set active or paused from the learner’s intent or actual teaching activity, not from publishing materials. When resuming, use active. On reopening a closed mission, choose the appropriate open state from the learner’s intent.
+
+On closure, remove the lifecycle label and use GitHub’s closure reason: completed only after the learner confirms the mission’s success criteria are met; not planned when they decide not to pursue it. Lifecycle labels describe status, never mission identity. Sub-issues use open/closed without these labels.
+
+Verify the resulting labels and issue state after updates. Reconcile the overview with the lifecycle and closure reason, showing proposed ideas as Proposed rather than completed or ready.
 
 ## Teach and integrate
 
@@ -29,7 +44,7 @@ Let `teach` own educational content and pedagogical records. Preserve its number
 
 ## Record progress and reconcile
 
-Read current parent and sub-issue state and relevant learning records. Record the learner’s report or demonstrated evidence on the relevant issue, linking supporting learning records when available. Update pedagogical records through `teach` when teaching establishes new evidence; do not invent records from issue closure or publication.
+Read current parent and sub-issue state and relevant learning records. Website quizzes provide immediate feedback; the learner explicitly reports results or questions to the agent for recording. Browser activity alone does not update authoritative progress, and the site requires no progress backend or GitHub authentication. Record the learner’s report or demonstrated evidence on the relevant issue, linking supporting learning records when available. Update pedagogical records through `teach` when teaching establishes new evidence; do not invent records from issue closure or publication.
 
 Close learning tasks when their stated criteria are satisfied by evidence or the learner’s explicit report. Mission closure additionally requires the learner’s confirmation. Closed-as-not-planned issues represent dropped work, not learning completion. If issue state and evidence conflict, surface the discrepancy rather than claiming mastery.
 

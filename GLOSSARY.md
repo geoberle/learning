@@ -7,7 +7,7 @@ Personal learning through focused missions, teaching materials, and evidence of 
 ## Language
 
 **Mission**:
-A learning objective grounded in a personal reason, with observable success criteria.
+A concrete capability to acquire, grounded in a personal reason and bounded by observable success criteria.
 
 **Workspace**:
 The enduring home of one mission’s materials and learning history, spanning multiple learning tasks and sessions.
