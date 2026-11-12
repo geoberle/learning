@@ -13,9 +13,15 @@ Identify the requested operation and mission from the user’s request, parent i
 
 Use GitHub’s available connector or `gh` for issues and sub-issue relationships. Inspect existing state before creating issues or workspaces so retries reuse completed work.
 
+## Organize topics
+
+Keep broad areas of interest as issues labeled `topic`. They organize missions and may remain open indefinitely; give them neither mission lifecycle labels nor teach workspaces. Preserve topic issues when defining missions beneath them.
+
+Use the hierarchy topic → mission → learning task. Each mission is a sub-issue of its primary topic and may parent its own task sub-issues. If a mission spans topics, choose one primary parent and link the others. Topic membership does not prescribe a learning sequence.
+
 ## Define or evolve a mission
 
-For a new mission, clarify the learner’s reason, observable success criteria, constraints, and scope using grilling. Define a concrete capability to acquire rather than an open-ended subject to study. Read the installed `teach` skill and its mission format. Confirm the mission before creating its workspace and MISSION.md. Reuse an existing backlog issue as the parent when it represents that mission; otherwise create a parent issue.
+For a new mission, clarify the learner’s reason, observable success criteria, constraints, and scope using grilling. Define a concrete capability to acquire rather than an open-ended subject to study. Read the installed `teach` skill and its mission format. Confirm the mission before creating its workspace and MISSION.md. Reuse an existing mission proposal when appropriate; otherwise create a mission issue beneath its topic. Do not convert the topic itself into a mission.
 
 Link the parent issue to MISSION.md, the workspace, and available published materials; link MISSION.md back to the parent. Keep the full mission definition in MISSION.md. Record mission changes with the learner’s confirmation and a learning record according to `teach`.
 
@@ -27,16 +33,16 @@ Create sub-issues only for questions, exercises, or gaps needing their own track
 
 Apply exactly one lifecycle label to each open mission parent or proposed mission issue:
 
-- `mission:proposed`: an idea whose purpose and success criteria still need definition; a workspace is not required yet.
+- `mission:proposed`: a proposed capability whose purpose or success criteria still need refinement; a workspace is not required yet.
 - `mission:ready`: the mission is agreed and its workspace is prepared, ready for learning.
 - `mission:active`: the learner is currently working toward the mission.
 - `mission:paused`: deliberately set aside; record context for resuming in the issue.
 
 Replace the previous lifecycle label when changing state, preserving unrelated labels. Set active or paused from the learner’s intent or actual teaching activity, not from publishing materials. When resuming, use active. On reopening a closed mission, choose the appropriate open state from the learner’s intent.
 
-On closure, remove the lifecycle label and use GitHub’s closure reason: completed only after the learner confirms the mission’s success criteria are met; not planned when they decide not to pursue it. Lifecycle labels describe status, never mission identity. Sub-issues use open/closed without these labels.
+On closure, remove the lifecycle label and use GitHub’s closure reason: completed only after the learner confirms the mission’s success criteria are met; not planned when they decide not to pursue it. Lifecycle labels describe status, never mission identity. Learning-task sub-issues use open/closed without these labels; mission issues retain lifecycle labels even though they are sub-issues of topics.
 
-Verify the resulting labels and issue state after updates. Reconcile the overview with the lifecycle and closure reason, showing proposed ideas as Proposed rather than completed or ready.
+Verify the resulting labels and issue state after updates. Reconcile the overview with the lifecycle and closure reason, showing mission proposals as Proposed and broad interests as Topics.
 
 ## Teach and integrate
 
@@ -52,7 +58,7 @@ Close learning tasks when their stated criteria are satisfied by evidence or the
 
 For a retention gap discovered after completion, create a review sub-issue under the completed mission and record the gap to inform future teaching. Keep the mission completed unless the learner decides its success criteria are no longer satisfied and asks to reopen it. Open review work does not automatically invalidate the original achievement.
 
-Update the overview to reflect issue status and available materials. Link published lessons and the mission parent; retain unscoped ideas as backlog. Report task completion as task completion, never as a percentage of understanding. Manual GitHub changes are reflected on the next reconciliation; no background synchronization is assumed.
+Update the overview to reflect issue status and available materials. Link published lessons and the mission parent; group missions beneath their topics and retain topic-only entries when no missions exist. Report task completion as task completion, never as a percentage of understanding. Manual GitHub changes are reflected on the next reconciliation; no background synchronization is assumed.
 
 ## Publish and verify
 

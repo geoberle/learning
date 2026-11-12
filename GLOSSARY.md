@@ -6,6 +6,9 @@ Personal learning through focused missions, teaching materials, and evidence of 
 
 ## Language
 
+**Topic**:
+An area of interest that can organize multiple learning missions without a fixed completion point.
+
 **Mission**:
 A concrete capability to acquire, grounded in a personal reason and bounded by observable success criteria.
 
