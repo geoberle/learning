@@ -1,6 +1,6 @@
 ---
 name: manage-learning
-description: Manage this repository’s learning missions and GitHub issues, integrate teach-generated materials, record reported progress, and reconcile the published overview.
+description: Manage this repository’s learning topics, missions, and GitHub issues, integrate teach-generated materials, record reported progress, and reconcile the published overview.
 ---
 
 # Manage learning
@@ -9,13 +9,15 @@ Read the repository’s AGENTS.md, GLOSSARY.md, and README.md for the model and 
 
 ## Establish context
 
-Identify the requested operation and mission from the user’s request, parent issue, and workspace links. Read the relevant issues and existing workspace artifacts before making changes. If the target is ambiguous, ask which mission; do not select one from the current directory alone.
+Identify the requested operation and relevant topic or mission from the user’s request, issue hierarchy, and workspace links. Topic management does not require selecting or creating a mission. Read the relevant issues and existing workspace artifacts before making changes. If the target is ambiguous, ask which mission; do not select one from the current directory alone.
 
 Use GitHub’s available connector or `gh` for issues and sub-issue relationships. Inspect existing state before creating issues or workspaces so retries reuse completed work.
 
 ## Organize topics
 
 Keep broad areas of interest as issues labeled `topic`. They organize missions and may remain open indefinitely; give them neither mission lifecycle labels nor teach workspaces. Preserve topic issues when defining missions beneath them.
+
+Write topic titles as areas of interest, such as “Topic: LLM fundamentals”, rather than instructions to learn or deliver something. Their bodies describe scope, optional directions for future missions, and sources. Preserve useful exercises as inspiration, not commitments. Use native sub-issues to collect missions; topic bodies have no completion checklist, success criteria, or prescribed teach session. When reclassifying an issue as a topic, update its title and body as well as its labels.
 
 Use the hierarchy topic → mission → learning task. Each mission is a sub-issue of its primary topic and may parent its own task sub-issues. If a mission spans topics, choose one primary parent and link the others. Topic membership does not prescribe a learning sequence.
 
@@ -51,6 +53,8 @@ When teaching or creating educational content is requested, locate and read Matt
 Let `teach` own educational content and pedagogical records. Preserve its numbered lessons, reference sheets, shared assets, and formats. Read existing assets before adding materials. Integrate the resulting lessons and reference sheets into the overview using the README’s relative-link conventions.
 
 ## Record progress and reconcile
+
+GitHub issues are authoritative for lifecycle and task status; MISSION.md defines the learning objective, and learning records preserve pedagogical evidence. The published GitHub Pages site is where the learner consumes materials; its overview is a derived summary, not another progress database.
 
 Read current parent and sub-issue state and relevant learning records. Website quizzes provide immediate feedback; the learner explicitly reports results or questions to the agent for recording. Browser activity alone does not update authoritative progress, and the site requires no progress backend or GitHub authentication. Record the learner’s report or demonstrated evidence on the relevant issue, linking supporting learning records when available. Update pedagogical records through `teach` when teaching establishes new evidence; do not invent records from issue closure or publication.
 
