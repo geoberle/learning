@@ -19,6 +19,8 @@ For a new mission, clarify the learner’s reason, observable success criteria, 
 
 Link the parent issue to MISSION.md, the workspace, and available published materials; link MISSION.md back to the parent. Keep the full mission definition in MISSION.md. Record mission changes with the learner’s confirmation and a learning record according to `teach`.
 
+Refine an existing mission when its underlying purpose stays the same. When the desired capability changes substantially, create a new mission linked to the earlier one; preserve completed missions as learning history rather than expanding their scope.
+
 Create sub-issues only for questions, exercises, or gaps needing their own tracking. Link related work across missions when useful; preserve one parent relationship per learning task.
 
 ## Mission lifecycle
@@ -47,6 +49,8 @@ Let `teach` own educational content and pedagogical records. Preserve its number
 Read current parent and sub-issue state and relevant learning records. Website quizzes provide immediate feedback; the learner explicitly reports results or questions to the agent for recording. Browser activity alone does not update authoritative progress, and the site requires no progress backend or GitHub authentication. Record the learner’s report or demonstrated evidence on the relevant issue, linking supporting learning records when available. Update pedagogical records through `teach` when teaching establishes new evidence; do not invent records from issue closure or publication.
 
 Close learning tasks when their stated criteria are satisfied by evidence or the learner’s explicit report. Mission closure additionally requires the learner’s confirmation. Closed-as-not-planned issues represent dropped work, not learning completion. If issue state and evidence conflict, surface the discrepancy rather than claiming mastery.
+
+For a retention gap discovered after completion, create a review sub-issue under the completed mission and record the gap to inform future teaching. Keep the mission completed unless the learner decides its success criteria are no longer satisfied and asks to reopen it. Open review work does not automatically invalidate the original achievement.
 
 Update the overview to reflect issue status and available materials. Link published lessons and the mission parent; retain unscoped ideas as backlog. Report task completion as task completion, never as a percentage of understanding. Manual GitHub changes are reflected on the next reconciliation; no background synchronization is assumed.
 
