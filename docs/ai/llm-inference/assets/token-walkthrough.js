@@ -15,15 +15,15 @@ document.querySelectorAll('[data-token-walkthrough]').forEach((root) => {
     });
     status.textContent = [
       'Ready · Prompt: [The][ cat]. No output tokens selected yet.',
-      'Prefill complete · Processed [The][ cat]; cached their state; selected [ sat].',
-      'Decode 1 complete · Processed [ sat]; reused prompt state; selected [ down].',
-      'Decode 2 complete · Processed [ down]; reused earlier state; selected [.].'
+      'Prefill complete · Processed [The][ cat]; saved reusable results; selected [ sat].',
+      'Decode 1 complete · Processed [ sat]; reused saved prompt results; selected [ down].',
+      'Decode 2 complete · Processed [ down]; reused earlier saved results; selected [.].'
     ][step];
     question.textContent = [
       'Run prefill to select the first output token.',
-      'The cache contains state for [The][ cat]. Next, process the selected [ sat] token.',
-      'The cache now includes [ sat]. Next, process the selected [ down] token.',
-      'Stopped at three output tokens. The final [.] was selected but does not need another model pass because generation ends here.'
+      'The cache contains results for [The][ cat]. Next, process the selected [ sat] token.',
+      'The cache now includes results for [ sat]. Next, process the selected [ down] token.',
+      'Stopped at three output tokens. The final [.] was selected but does not need another processing step because generation ends here.'
     ][step];
     next.textContent = ['Run prefill', 'Run decode 1', 'Run decode 2', 'Complete'][step];
     next.disabled = step === tokens.length;

@@ -1,14 +1,87 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>From prompt to first token—and beyond · LLM inference</title><link rel="stylesheet" href="../assets/style.css"><script src="../assets/token-walkthrough.js" defer></script></head>
-<body><main><nav><a href="../../../index.html">Back to learning</a></nav><p class="eyebrow">Lesson 01 · About 5 minutes</p><h1>From prompt to first token—and beyond</h1><p>Trace one request through the two phases of LLM inference: <strong>prefill</strong> and <strong>decode</strong>.</p>
-<h2>The minimum vocabulary</h2><p>Inference means running a trained model on input. A <strong>tokenizer</strong> turns the input text—the <strong>prompt</strong>—into numbered units called tokens. A token may represent a word, part of a word, or punctuation. <a href="https://huggingface.co/learn/llm-course/chapter2/4">Tokenization source</a>.</p>
-<figure class="diagram"><div class="flow"><div><small>Prompt text</small><code>The cat</code></div><span aria-hidden="true">→</span><div><small>Tokens</small><code>[The][ cat]</code></div><span aria-hidden="true">→</span><div><small>Token IDs</small><code>[17, 42]</code></div></div><figcaption>Invented boundaries and IDs. Each bracket denotes one token throughout this lesson.</figcaption></figure>
-<p>The model predicts probabilities for the next token; a selection rule chooses one. Append that token and repeat, using the prompt plus the generated tokens so far as context. Stop at an end token or another limit. <a href="https://huggingface.co/docs/transformers/llm_tutorial">Generation source</a>.</p>
-<h2>One request, two phases</h2><p>We’ll use ordinary generation with a KV cache, without prompt-cache reuse or speculative decoding. </p><p><strong>Prefill:</strong> the model processes the prompt <code>[The][ cat]</code> and stores reusable intermediate results. It also computes scores for tokens that could come after the last prompt token, <code>[ cat]</code>. A selection rule uses those scores to choose the first generated token—for example, <code>[ sat]</code>. Prefill therefore supplies the prediction used to start the answer.</p><p><strong>Decode:</strong> the model now processes the selected <code>[ sat]</code>, reusing stored work from <code>[The][ cat]</code>. It computes new scores for what comes next, from which we select <code>[ down]</code>. Each further decode step processes the latest selected token to predict another. <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/gen-ai-inference-architecture-and-best-practices-on-aws/how-ai-inference-works.html#llm-inference-prefill-and-decode">Phase source: AWS</a>.</p>
-<figure class="diagram"><ol class="request-trace"><li><strong>Prefill → select first output</strong><span>Process <code>[The][ cat]</code></span><span>Store prompt state · score possible next tokens<br>Select first generated token: <code>[ sat]</code></span></li><li><strong>Decode → select second output</strong><span>Process <code>[ sat]</code> + reuse prompt state</span><span>Extend stored state · score possible next tokens<br>Select next generated token: <code>[ down]</code></span></li><li><strong>Decode → select third output</strong><span>Process <code>[ down]</code> + reuse earlier state</span><span>Extend stored state · score possible next tokens<br>Select next generated token: <code>[.]</code></span></li></ol><figcaption>A fixed, invented continuation. Arrows show execution order, not elapsed time. Stop here if the output limit is three tokens.</figcaption></figure>
-<p>The <strong>KV cache</strong> stores intermediate attention results, not a prewritten answer. For now, treat it as reusable work from processed positions; attention and the meaning of “keys” and “values” come next. <a href="https://huggingface.co/docs/text-generation-inference/conceptual/paged_attention">Cache source</a>.</p>
-<p>All prompt tokens are known in advance, so prefill can work across their positions in parallel. Future output tokens depend on earlier choices, so ordinary decode advances sequentially. Processing only the latest token does <em>not</em> mean ignoring earlier context: cached state carries it forward.</p>
-<h2>Why the first wait feels different</h2><p><strong>Time to first token (TTFT)</strong> covers the wait before output begins, including prompt processing and potentially queueing and other overhead. <strong>Inter-token latency</strong> measures the gaps between subsequent output tokens. These are distinct measurements; a slow first token alone does not prove prefill is the bottleneck. <a href="https://docs.vllm.ai/en/latest/design/metrics/">Measurement source: vLLM</a>.</p>
-<section class="walkthrough" data-token-walkthrough><h2>Step through the request</h2><p>Follow what is newly processed, what is reused, and what is selected. This is an illustration, not a running model.</p><div data-sequence aria-label="Current token sequence"></div><p data-status role="status" aria-live="polite">Ready: the prompt is [The][ cat].</p><p data-question>Run prefill to select the first output token.</p><div class="controls" hidden><button type="button" data-next>Run prefill</button><button type="button" data-reset>Start again</button></div><noscript><p>The three execution stages are shown in the diagram above. Enable JavaScript to step through them.</p></noscript><p class="print-only">Use the request diagram above as the printed walkthrough.</p></section>
-<section class="practice"><h2>One check</h2><p>A different prompt contains 20 tokens. The server has finished prefill and selected its first output token. To produce the second output token, what does it newly process, and how does it still use the prompt?</p><details><summary>Compare your explanation</summary><p>It processes the first output token in a decode step and reuses the prompt’s cached state. It does not repeat prefill over all 20 prompt tokens. The selected second output token becomes input to the following decode step if generation continues.</p></details><p>Send your explanation or any follow-up questions to the agent. We’ll use them to decide how deeply to explore attention and caching.</p></section>
-<footer><p><a href="../reference/glossary.html">Reference glossary</a> · <a href="https://github.com/geoberle/learning/issues/8">Mission and progress</a></p><p>Primary reading: <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/gen-ai-inference-architecture-and-best-practices-on-aws/how-ai-inference-works.html#llm-inference-prefill-and-decode">AWS: LLM inference—prefill and decode</a>. Read the phase descriptions; leave hardware bottlenecks and cache internals for later.</p></footer></main></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>How a model starts and continues an answer · LLM inference</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="../assets/token-walkthrough.js" defer></script>
+</head>
+<body><main>
+<nav><a href="../../../index.html">Back to learning</a></nav>
+<p class="eyebrow">Lesson 01 · About 7 minutes</p>
+<h1>How a model starts and continues an answer</h1>
+<p>Follow one request from input text to three pieces of generated text. By the end, you’ll be able to explain why starting an answer and continuing it involve different work.</p>
+
+<h2>1. Turn text into units the model can use</h2>
+<aside class="definitions" aria-label="Terms for the input">
+<dl>
+<dt>Large language model (LLM)</dt><dd>A model trained on language that can predict how text might continue. Running a trained model on new input is called <strong>inference</strong>.</dd>
+<dt>Prompt</dt><dd>The text supplied to the model as its starting input.</dd>
+<dt>Token</dt><dd>A unit of text represented by a number. It may be a word, part of a word, or punctuation.</dd>
+<dt>Tokenizer</dt><dd>The component that splits text into tokens and assigns their numerical identifiers.</dd>
+</dl>
+</aside>
+<p>Our prompt is <code>The cat</code>. We’ll pretend it becomes two tokens. Real token boundaries and numbers depend on the tokenizer. <a href="https://huggingface.co/learn/llm-course/chapter2/4">Source: tokenizers</a>.</p>
+<figure class="diagram">
+<ol class="request-trace">
+<li><strong>Text supplied</strong><code>The cat</code></li>
+<li><strong>Tokenizer converts it</strong><span><code>[The][ cat]</code> → numerical identifiers <code>[17, 42]</code></span></li>
+</ol>
+<figcaption>Invented token boundaries and numbers. Each bracket marks one token; a leading space belongs to that token.</figcaption>
+</figure>
+
+<h2>2. Predict one continuation</h2>
+<aside class="definitions" aria-label="Terms for prediction"><dl>
+<dt>Next-token scores</dt><dd>Numbers expressing how strongly the model favors each possible next token. They can be converted into probabilities.</dd>
+<dt>Selection rule</dt><dd>The procedure that chooses one token from those predictions—for example, choosing the most likely token.</dd>
+</dl></aside>
+<p>The model processes <code>[The][ cat]</code> and scores possible continuations. The selection rule chooses one token; in our invented example, it chooses <code>[ sat]</code>. That token joins the sequence. The next prediction must now continue <code>The cat sat</code>. <a href="https://huggingface.co/docs/transformers/llm_tutorial">Source: text generation</a> · <a href="https://huggingface.co/docs/transformers/generation_strategies">Selection rules</a>.</p>
+<p>But must the model process the entire growing sequence again each time? It can reuse some earlier work.</p>
+
+<h2>3. Start the answer, then reuse work</h2>
+<aside class="definitions" aria-label="Terms for the two phases"><dl>
+<dt>Cache</dt><dd>Saved computation results that can be reused. Here, it holds numerical results from processing earlier tokens.</dd>
+<dt>Prefill</dt><dd>The stage that processes the prompt, fills the cache, and produces the prediction used to choose the first generated token.</dd>
+<dt>Decode</dt><dd>The repeated stage that processes the latest generated token, reuses cached results, and produces the prediction used to choose the next token.</dd>
+</dl></aside>
+<p>During <strong>prefill</strong>, the model processes <code>[The][ cat]</code>. It saves reusable results for those tokens and computes scores for what could follow <code>[ cat]</code>, the last token of the prompt. We use those scores to select <code>[ sat]</code>. So prefill supplies a prediction as well as preparing the cache.</p>
+<p>During the next <strong>decode</strong> step, the model processes <code>[ sat]</code> and uses the saved results for <code>[The][ cat]</code>. It saves new results for <code>[ sat]</code> and predicts what follows. We select <code>[ down]</code>. Earlier text still influences the prediction through the cache. <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/gen-ai-inference-architecture-and-best-practices-on-aws/how-ai-inference-works.html#llm-inference-prefill-and-decode">Source: prefill and decode</a>.</p>
+<figure class="diagram">
+<ol class="request-trace">
+<li><strong>Prefill</strong><span>Newly process: <code>[The][ cat]</code></span><span>Save results for both prompt tokens.</span><span>Predict what follows → select <code>[ sat]</code></span></li>
+<li><strong>Decode step 1</strong><span>Newly process: <code>[ sat]</code></span><span>Reuse prompt results; save results for <code>[ sat]</code>.</span><span>Predict what follows → select <code>[ down]</code></span></li>
+<li><strong>Decode step 2</strong><span>Newly process: <code>[ down]</code></span><span>Reuse earlier results; save results for <code>[ down]</code>.</span><span>Predict what follows → select <code>[.]</code></span></li>
+</ol>
+<figcaption>One invented request, in execution order. We stop after three generated tokens. The cache contains results of processing text, not the remaining answer.</figcaption>
+</figure>
+<p>The prompt is already known, so prefill can process its tokens together. The continuation is not yet known: each choice supplies the input for the next decode step. This is the basic cached generation pattern; later lessons will explain exactly which results are saved.</p>
+
+<h2>4. Connect the phases to waiting</h2>
+<aside class="definitions" aria-label="Terms for timing"><dl>
+<dt>Time to first token (TTFT)</dt><dd>The elapsed time before the first generated token becomes available.</dd>
+<dt>Inter-token latency</dt><dd>The elapsed time between successive generated tokens.</dd>
+</dl></aside>
+<p>Prefill contributes to the first wait; decode contributes to subsequent gaps. The first wait can also include time spent waiting for the server to start work. Measurements have specific start and end points, so a slow first token alone does not tell you which part was slow. <a href="https://docs.vllm.ai/en/latest/design/metrics/">Source: vLLM’s timing definitions</a>.</p>
+
+<section class="walkthrough" data-token-walkthrough>
+<h2>Follow the work yourself</h2>
+<p>Step through the same request. Watch the difference between selecting a token and processing it in the following step. Solid borders mark prompt tokens; dashed borders mark generated tokens.</p>
+<div data-sequence aria-label="Current token sequence"><span class="token">The</span><span class="token"> cat</span></div>
+<p data-status role="status" aria-live="polite">Ready: the prompt is [The][ cat].</p>
+<p data-question>Run prefill to select the first output token.</p>
+<div class="controls" hidden><button type="button" data-next>Run prefill</button><button type="button" data-reset>Start again</button></div>
+<noscript><p>Enable JavaScript to step through the request, or follow the static diagram above.</p></noscript>
+<p class="print-only">The diagram above shows all three stages of this walkthrough.</p>
+</section>
+<section class="practice">
+<h2>One check</h2>
+<p>A new request has a 20-token prompt. Prefill has finished, and the first generated token has been selected. What does the model newly process to predict the second generated token, and how does the prompt still influence it?</p>
+<details><summary>Compare your explanation</summary><p>It processes the first generated token in a decode step, using cached results for the prompt. It does not repeat prefill over the 20 prompt tokens. If generation continues, the selected second token will be processed in the following step.</p></details>
+<p>Send your explanation or questions to the agent. Ask about anything that remains unclear; your answer will guide the next lesson.</p>
+</section>
+<footer>
+<p><a href="../reference/glossary.html">Reference glossary</a> · <a href="https://github.com/geoberle/learning/issues/8">Mission and progress</a></p>
+<p>Primary reading: <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/gen-ai-inference-architecture-and-best-practices-on-aws/how-ai-inference-works.html#llm-inference-prefill-and-decode">AWS: LLM inference—prefill and decode</a>. Read the two phase descriptions; the later hardware and cache details go beyond this lesson.</p>
+</footer>
+</main></body></html>
