@@ -1,23 +1,46 @@
 # Learning
 
-Personal learning notes and interactive HTML lessons.
+Gerd’s personal learning missions, interactive lessons, and reference materials.
 
 [Read the lessons](https://geoberle.github.io/learning/) · [Learning backlog](https://github.com/geoberle/learning/issues)
 
-## Add a lesson
+## Manage learning
 
-1. Use a learning issue as input for a teach session.
-2. Save its HTML as `docs/<topic>/index.html`, with any assets beside it.
-3. Include a navigation link in the lesson: `<a href="../index.html">Back to lessons</a>`.
-4. In `docs/index.html`, link the topic title to `<topic>/index.html` and replace its “Planned” label with “Available”. Add a new list entry for a new topic.
-5. Commit and push to `main`. GitHub Pages publishes the updated `docs` directory.
+Use the project skill `manage-learning` to define missions, organize issues, integrate materials, record progress, or refresh the overview. Its instructions are in [.agents/skills/manage-learning/SKILL.md](.agents/skills/manage-learning/SKILL.md); repository conventions are in [AGENTS.md](AGENTS.md).
 
-Use relative URLs for local assets and navigation, not paths starting with `/`. Keep generated lessons self-contained where possible; there is no build framework or shared JavaScript requirement. Open `docs/index.html` in a browser to read locally. Lessons that require HTTP can be previewed with `python3 -m http.server --directory docs 8000`.
+Each mission has a parent GitHub issue and a teaching workspace. Sub-issues track questions, exercises, and gaps over time. Ideas remain backlog until their missions are defined. Matt Pocock’s `teach` skill manages educational materials and learning records; it must be available in the agent environment.
 
-## Publishing
+## Workspace layout
 
-GitHub Pages publishes from the `/docs` folder on `main`. `docs/.nojekyll` ensures HTML and assets are served without Jekyll processing.
+Run `teach` from the mission directory, such as `docs/ai/llm-fundamentals/`. Paths in that skill resolve from that directory. Create artifacts as needed:
 
-Both the repository and the website are public. Everything under `docs/` is served on the website; all other committed files remain visible on GitHub. Keep credentials and private work material out of this repository.
+```text
+docs/
+  index.html
+  <subject>/<mission>/
+    MISSION.md
+    RESOURCES.md
+    NOTES.md
+    lessons/0001-slug.html
+    reference/
+    assets/
+    learning-records/
+```
 
-Check deployment status in the repository’s Actions tab and Settings → Pages.
+Follow `teach` for artifact formats and shared components. Each workspace has its own shared stylesheet. MISSION.md and the parent issue link to each other.
+
+## Add and publish materials
+
+1. Create or update materials through `teach` in the selected workspace.
+2. Link lessons and reference sheets from `docs/index.html`, grouped by subject and mission. Show availability separately from learning status and include the parent issue link. Backlog entries link to their existing issues.
+3. Include a “Back to learning” link in lesson and reference pages. At the layout above, its target is `../../../index.html`. Use `../assets/` for workspace assets and relative links between materials.
+4. Verify links and assets, then commit and push the scoped changes to `main`.
+5. Verify the Pages deployment and the affected public URLs.
+
+The overview is refreshed during managed changes or explicit reconciliation. Manual issue changes do not update it automatically. Publishing a lesson does not mean it has been learned.
+
+Use relative URLs rather than paths starting with `/`, so navigation works locally and under `/learning/`. Open `docs/index.html` locally, or use `python3 -m http.server --directory docs 8000` for lessons requiring HTTP.
+
+GitHub Pages publishes `/docs` on `main`. `docs/.nojekyll` bypasses Jekyll processing. Check deployment status in Actions and Settings → Pages.
+
+Both the repository and the website are public, including committed mission metadata and learning records. Keep credentials and private work material out of the repository.
