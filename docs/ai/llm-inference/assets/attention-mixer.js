@@ -14,6 +14,6 @@ document.querySelectorAll('[data-attention-mixer]').forEach((root) => {
       outputs[i].textContent = `${weight}%`;
     });
     const result = selected.reduce((sum, weight, i) => sum + weight / 100 * values[i], 0);
-    root.querySelector('[data-result]').textContent = `${selected.map((weight, i) => `${(weight / 100).toFixed(2)} × ${values[i]}`).join(' + ')} = ${result.toFixed(1)}`;
+    root.querySelector('[data-result]').textContent = `${selected.map((weight, i) => `${weight}% of ${values[i]}`).join(' + ')} = ${result.toFixed(1)}`;
   }));
 });

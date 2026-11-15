@@ -17,9 +17,9 @@
   Maintainer definitions and measurement boundaries for first-token and inter-token latency.
 
 - [Hugging Face: How caching works](https://huggingface.co/docs/transformers/cache_explanation)
-  Maintainer explanation of causal attention, per-layer cached keys and values, and new decode work. Used in lesson 2.
+  Maintainer explanation of causal attention, per-layer cached keys and values, and new decode work. Lesson 2 links only its reuse motivation; internals are deferred.
 - [Vaswani et al.: Attention Is All You Need, §3.2](https://arxiv.org/html/1706.03762v7#S3.SS2)
-  Primary source for query/key matching, weighted value mixtures, and attention heads. Used in lesson 2; full architecture is outside this mission.
+  Primary source for attention. Revised lesson 2 uses only the weighted-combination idea; matching and heads are deferred. Full architecture is outside this mission.
 
 ## Gaps
 
