@@ -16,6 +16,11 @@
 - [vLLM: Metrics](https://docs.vllm.ai/en/latest/design/metrics/)
   Maintainer definitions and measurement boundaries for first-token and inter-token latency.
 
+- [Hugging Face: How caching works](https://huggingface.co/docs/transformers/cache_explanation)
+  Maintainer explanation of causal attention, per-layer cached keys and values, and new decode work. Used in lesson 2.
+- [Vaswani et al.: Attention Is All You Need, §3.2](https://arxiv.org/html/1706.03762v7#S3.SS2)
+  Primary source for query/key matching, weighted value mixtures, and attention heads. Used in lesson 2; full architecture is outside this mission.
+
 ## Gaps
 
-Find and read primary sources explaining attention and the meaning of keys and values before teaching cache internals. Community resources have not yet been evaluated.
+Community resources have not yet been evaluated.
